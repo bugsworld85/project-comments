@@ -1,0 +1,29 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "~bootstrap/scss/bootstrap";
+
+.flex {
+    display: flex;
+    .center {
+        align-items: center;
+    }
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.pointer {
+    cursor: pointer;
+    &:hover {
+        cursor: pointer;
+        &.strong {
+            font-weight: bold;
+        }
+    }
+}
