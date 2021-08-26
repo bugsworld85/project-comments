@@ -14,6 +14,10 @@ class Comment extends Model
         'name', 'message', 'parent_id'
     ];
 
+    public $with = [
+        'children'
+    ];
+
     public $appends = [
         'initials',
         'age'
@@ -22,8 +26,7 @@ class Comment extends Model
     public function children()
     {
         return $this->hasMany(self::class, 'parent_id', 'id')
-            ->orderBy('created_at', 'DESC')
-            ->with(['children']);
+            ->orderBy('created_at', 'DESC');
     }
 
     public function getAgeAttribute()

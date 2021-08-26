@@ -17,7 +17,6 @@ class CommentController extends Controller
     public function index()
     {
         $comments = Comment::whereNull('parent_id')
-            ->with(['children'])
             ->orderBy('created_at', 'DESC')
             ->get();
 
