@@ -80,7 +80,7 @@ export default {
                 .post("/comment/submit", {
                     name: this.name,
                     message: this.message,
-                    parent_id: this.comment.id,
+                    parent_id: this.comment !== null ? this.comment.id : null,
                 })
                 .then((response) => {
                     this.reset();
