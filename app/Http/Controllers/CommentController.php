@@ -17,7 +17,7 @@ class CommentController extends Controller
     public function index()
     {
         $comments = Comment::whereNull('parent_id')
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('created_at', 'ASC')
             ->get();
 
         return DefaultResource::collection($comments)->additional([

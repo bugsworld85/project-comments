@@ -1,17 +1,14 @@
 <template>
     <div class="comment-replies-container" v-if="comment !== null">
         <div>
-            <span class="pointer strong" @click="handleReplyAttempt()">
-                {{ isCurrentComment ? "Cancel" : "Reply" }}
+            <span v-if="allowReply && level < maxLevel">
+                <span class="pointer strong" @click="handleReplyAttempt()">
+                    {{ isCurrentComment ? "Cancel Reply" : "Reply" }}
+                </span>
+                &middot;
             </span>
-            &middot;
             <span class="comment-age">{{ comment.age }}</span>
         </div>
-        <CommentForm
-            v-if="isCurrentComment"
-            :parentId="comment.id"
-            @submitted="handleSubmitted"
-        />
         <ul class="comments-container">
             <li
                 v-for="_comment in comment.children"
@@ -21,9 +18,15 @@
             >
                 <Comment v-bind="{ comment: _comment }" />
                 <comment-replies
-                    v-bind="{ comment: _comment, allowReply: false }"
-                    v-if="allowReply"
+                    v-bind="{
+                        comment: _comment,
+                        allowReply: true,
+                        level: level + 1,
+                    }"
                 />
+            </li>
+            <li v-if="isCurrentComment">
+                <CommentForm :comment="comment" @submitted="handleSubmitted" />
             </li>
         </ul>
     </div>
@@ -48,10 +51,21 @@ export default {
             type: Boolean,
             default: true,
         },
+        level: {
+            type: Number,
+            default: 1,
+        },
+        maxLevel: {
+            type: Number,
+            default: 3,
+        },
     },
     computed: {
         isCurrentComment() {
-            return this.$store.state.currentCommentId === this.comment.id;
+            return (
+                this.$store.state.currentComment !== null &&
+                this.$store.state.currentComment.id === this.comment.id
+            );
         },
     },
     methods: {
@@ -61,7 +75,7 @@ export default {
         handleReplyAttempt() {
             this.$store.commit(
                 "setCurrentComment",
-                this.isCurrentComment ? null : this.comment.id
+                this.isCurrentComment ? null : this.comment
             );
         },
     },

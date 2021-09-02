@@ -1,13 +1,10 @@
 <template>
     <div class="card mb-5">
         <div class="card-body">
-            <h4>What can you say about this?</h4>
-            <CommentForm />
             <h5>
                 {{ totalComments }}
-                {{ totalComments <= 1 ? "Comment" : "Comments" }}
+                {{ totalComments > 1 ? "Comments" : "Comment" }}
             </h5>
-            <hr />
             <ul class="comments-container">
                 <li
                     v-for="comment in comments"
@@ -19,6 +16,9 @@
                     <CommentReplies v-bind="{ comment }" />
                 </li>
             </ul>
+            <hr />
+            <h4>What can you say about this?</h4>
+            <CommentForm />
         </div>
     </div>
 </template>

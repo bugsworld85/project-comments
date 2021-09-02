@@ -2,6 +2,12 @@
     <div class="card mb-2">
         <div class="card-body">
             <form @submit.prevent="handleSubmitComment">
+                <blockquote v-if="comment !== null">
+                    <span class="d-block"
+                        >Reply to <strong>{{ comment.name }}</strong></span
+                    >
+                    <em>{{ comment.message }}</em>
+                </blockquote>
                 <span class="text-danger" v-if="errors.length !== ''">
                     {{ errors }}
                 </span>
@@ -21,9 +27,18 @@
                         placeholder="Please enter your name"
                         v-model="name"
                     />
+                    <button
+                        class="btn btn-secondary nowrap mr-2"
+                        v-if="comment !== null"
+                        type="button"
+                        @click="handleCancelReply"
+                    >
+                        <i class="fa fa-times"></i>
+                        <span>Cancel Reply</span>
+                    </button>
                     <button class="btn btn-primary nowrap" type="submit">
                         <i class="fa fa-paper-plane"></i>
-                        Post Comment
+                        <span>Post Comment</span>
                     </button>
                 </p>
             </form>
@@ -35,7 +50,7 @@
 export default {
     name: "comment-form",
     props: {
-        parentId: {
+        comment: {
             type: Number,
             default: null,
         },
@@ -51,6 +66,9 @@ export default {
         this.$refs.messageField.focus();
     },
     methods: {
+        handleCancelReply() {
+            this.$store.commit("setCurrentComment", null);
+        },
         reset() {
             this.name = "";
             this.message = "";
@@ -62,7 +80,7 @@ export default {
                 .post("/comment/submit", {
                     name: this.name,
                     message: this.message,
-                    parent_id: this.parentId,
+                    parent_id: this.comment.id,
                 })
                 .then((response) => {
                     this.reset();
@@ -84,5 +102,23 @@ export default {
 .card {
     background-color: #f1f1f1;
     border: none;
+    blockquote {
+        em {
+            color: #bbb;
+            border-left: 3px solid;
+            margin-left: 10px;
+            padding-left: 10px;
+        }
+    }
+}
+
+@media only screen and (max-width: 560px) {
+    .card {
+        .btn {
+            span {
+                display: none;
+            }
+        }
+    }
 }
 </style>

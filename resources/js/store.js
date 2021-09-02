@@ -8,21 +8,21 @@ export default new Vuex.Store({
     state: {
         comments: [],
         totalComments: 0,
-        currentCommentId: null,
+        currentComment: null,
     },
     mutations: {
         initialized(state, response) {
             state.comments = response.data.data;
             state.totalComments = response.data.meta.total;
         },
-        setCurrentComment(state, commentId) {
-            state.currentCommentId = commentId;
+        setCurrentComment(state, comment) {
+            state.currentComment = comment;
         }
     },
     getters: {
         comments: state => state.comments,
         totalComments: state => state.totalComments,
-        currentCommentId: state => state.currentCommentId,
+        currentComment: state => state.currentComment,
     },
     actions: {
         async fetchComments({ commit }) {

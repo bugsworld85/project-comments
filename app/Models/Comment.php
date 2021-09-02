@@ -26,7 +26,7 @@ class Comment extends Model
     public function children()
     {
         return $this->hasMany(self::class, 'parent_id', 'id')
-            ->orderBy('created_at', 'DESC');
+            ->orderBy('created_at', 'ASC');
     }
 
     public function getAgeAttribute()
